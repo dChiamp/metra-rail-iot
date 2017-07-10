@@ -1,0 +1,60 @@
+<section id="rail">
+
+    <div class="title-container text-center">
+      <h1>Welcome to {{title}}</h1>
+    </div>
+
+    <div class="row">
+      <div class="columns small-10 small-centered text-center">
+        
+        <h4>Choose Station</h4>
+        <select id="station-select">
+          <option value="">Select Station</option>
+          <option data-station-id="80410" value="80410">ChinaTown</option>
+          <option data-station-id="80413" value="80413">SouthWest Musuem</option>
+        </select>
+        
+        <div class="button-container">
+          <button class="button" id="get-times">Get Info</button>
+        </div>
+
+        <ul id="stop-info">
+        </ul>
+
+      </div>
+    </div>
+
+    <div id="color-container" class="text-center">
+      <div class="status hide" id="red">  
+      </div>
+
+      <div id="yellow" class="hide status">
+        <div id="yellow-destination"></div>
+        <div id="yellow-ttd"></div>  
+      </div>
+
+      <div id="green"  class="hide status">
+        <div id="green-destination"></div>
+        <div id="green-ttd"></div>  
+      </div>
+    </div>
+
+    <div class="button-container text-center">
+      <button class="button" id="display-info">Show Message</button>
+    </div>
+
+    <div class="button-container text-center">
+      <button class="button" id="clear-info">claer Message</button>
+    </div>
+
+
+</section>
+
+
+<footer>
+  <script type="text/javascript" src="/javascripts/socket-io.js"> </script>>
+  
+  <script type="text/javascript" src="/javascripts/main.js"> </script>
+        
+</footer>
+
