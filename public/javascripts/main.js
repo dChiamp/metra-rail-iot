@@ -3,7 +3,12 @@ jQuery( document ).ready(function() {
 
 
   $('#display-info').on('click', function() {
-    socket.emit('message','hello world');
+    var msg = jQuery('#msg').val()
+    if (msg != undefined) {
+      socket.emit('message', msg);
+    } else {
+      alert("enter message")
+    }
   });
 
 

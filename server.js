@@ -76,10 +76,13 @@ io.on('connection', function(socket){
   });
 
   socket.on('message', function(msg){
-    led.blink();
+    // led.blink();
     io.emit('message', msg);
 
-    console.log('message: blinky' + msg);
+    oled.clearDisplay();
+    oled.setCursor(1, 1);
+    oled.writeString(font, 1, msg, 1, true, 10);
+    console.log('message: ' + msg);
   });
 
   socket.on('rail', function(stationId, stationName){
