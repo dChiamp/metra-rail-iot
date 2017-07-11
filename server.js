@@ -130,14 +130,28 @@ function parseData (info, stationName) {
   var minDestination = destinations[minDirection];
   var minTime = data[0]['minutes'];
 
+  for ( var i = 0; i < data.length; i++ ) {
+    var stop = data[i]
+    var direction = stop['run_id']
+    var destination = destinations[direction]
+    var minutes = stop['minutes']
+
+	if (minutes >= 8 && minutes <= 13) {
+			console.log("destination: ", destination, "minutes: ", minutes);	
+  			var yellowDirection = data[i]['run_id'];
+  			var yellowDestination = destinations[yellowDirection];
+  			var yellowTime = data[i]['minutes'];
+	}
+  }
+
   console.log('minDestination: ', minDestination, 'minTime:', minTime);
 
-  var railInfo = `stop: ${stationName} dest: ${minDestination} leaving in: ${minTime}`
+  var railInfo = `stop: ${stationName} dest: ${yellowDestination} leaving in: ${yellowTime}`
   oled.clearDisplay();
   oled.setCursor(1, 1);
   oled.writeString(font, 1, railInfo, 1, true, 10);
-
-  /*for ( var i = 0; i < data.length; i++ ) {
+/*
+  for ( var i = 0; i < data.length; i++ ) {
     var stop = data[i]
     var direction = stop['run_id']
     var destination = destinations[direction]
