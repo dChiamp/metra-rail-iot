@@ -137,7 +137,7 @@ function parseData (info, stationName) {
     var minutes = stop['minutes']
 
 	if (minutes >= 8 && minutes <= 13) {
-    		console.log("destination: ", destination, "minutes: ", 
+			console.log("destination: ", destination, "minutes: ", minutes);	
   			var yellowDirection = data[i]['run_id'];
   			var yellowDestination = destinations[yellowDirection];
   			var yellowTime = data[i]['minutes'];
