@@ -13,7 +13,7 @@ jQuery( document ).ready(function() {
 
   socket.on('message', function(msg){
     console.log('msg ', msg);
-    // parseData (data) 
+    // parseRailData (data) 
   });
 
   $('#clear-info').on('click', function() {
@@ -22,7 +22,7 @@ jQuery( document ).ready(function() {
 
   socket.on('clear', function(msg){
     console.log('msg ', msg);
-    // parseData (data) 
+    // parseRailData (data) 
   });
 
   $('#get-weather').on('click', function() {
@@ -31,12 +31,8 @@ jQuery( document ).ready(function() {
 
   socket.on('get-weather', function(data){
     console.log('data ', data);
-    // parseData (data) 
+    parseWeatherData(data) 
   });
-
-
-
-
 
 
   var globalStationId;
@@ -73,7 +69,7 @@ jQuery( document ).ready(function() {
       var stationName =  stationNames[globalStationId]
 
       console.log('stationName ', stationName)
-      // getInfo(url, parseData)
+      // getInfo(url, parseRailData)
       socket.emit('rail', globalStationId, stationName);
 
     } else {
@@ -85,13 +81,29 @@ jQuery( document ).ready(function() {
   });
 
   socket.on('rail', function( data){
-    console.log('data ', data);
-    parseData (data) 
+    // console.log('data ', data);
+    parseRailData (data) 
   });
 
+  function parseWeatherData (data) {
+    var currentWeather = data['current_observation'];
+    var feelsLike = currentWeather['feelslike_string'];
+    var weather = currentWeather['weather'];
+    var WindString = currentWeather['wind_string'];
+    var uv = currentWeather['UV'];
+    var icon = currentWeather['icon'];
+
+    $('#current-weather').html("<i class='wi wi-wu-"+ icon +"'> </i>");
+    $('#feels-like').html("Feels Like " + feelsLike);
+    $('#wind-string').html("Wind " + WindString);
+
+    console.log('currentWeather', currentWeather, 'feelsLike', feelsLike, 'weather', weather, 'WindString', WindString, 'uv', uv)
+
+  }
+
     // parse return and render info
-  function parseData (info) {
-    console.log("parseData: ", data)
+  function parseRailData (info) {
+    console.log("parseRailData: ", data)
     var data = info.items
     for ( var i = 0; i < data.length; i++ ) {
       

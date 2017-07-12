@@ -74,7 +74,7 @@ io.on('connection', function(socket){
 
   socket.on('get-weather', function(){
     var weatherUrl = `http://api.wunderground.com/api/${process.env.WUNDERGROUND_API_KEY}/conditions/q/CA/Los_Angeles.json`
-    getInfo(weatherUrl, 'get-weather', io);
+    getInfo(weatherUrl, 'get-weather');
   });
 
 
@@ -96,10 +96,9 @@ io.on('connection', function(socket){
   });
 
   socket.on('rail', function(stationId, stationName){
-
-    // oled.turnOnDisplay();
-
     const getURL = `http://api.metro.net/agencies/lametro-rail/routes/804/stops/${stationId}/predictions`
+
+    //getInfo(getURL, 'rail', parseData)
 
     request({
       method: 'GET',
@@ -119,8 +118,6 @@ io.on('connection', function(socket){
       }
 
     })
-
-    // oled.writeString(font, 1, 'rail info', 1, true, 2);
     console.log('rail endpoint' + stationId);
 
 
@@ -140,7 +137,7 @@ function getInfo (url, socket, cb) {
       } else {
         var data = JSON.parse(info);
         console.log('getInfo data: ', data);
-        cb.emit(socket, data)
+        io.emit(socket, data)
       }
 
     })
@@ -166,12 +163,12 @@ function parseData (info, stationName) {
     var destination = destinations[direction]
     var minutes = stop['minutes']
 
-	if (minutes >= 8 && minutes <= 13) {
+  	if (minutes >= 8 && minutes <= 13) {
 			console.log("destination: ", destination, "minutes: ", minutes);	
-  			var yellowDirection = data[i]['run_id'];
-  			var yellowDestination = destinations[yellowDirection];
-  			var yellowTime = data[i]['minutes'];
-	}
+			var yellowDirection = data[i]['run_id'];
+			var yellowDestination = destinations[yellowDirection];
+			var yellowTime = data[i]['minutes'];
+  	}
   }
 
   console.log('minDestination: ', minDestination, 'minTime:', minTime);
