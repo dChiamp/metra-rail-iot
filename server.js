@@ -41,7 +41,7 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-/*
+
 var five = require('johnny-five'),
     font = require('oled-font-5x7'),
     Oled = require('oled-js');
@@ -63,7 +63,7 @@ board.on("ready", function() {
   led = new five.Led(2);
 
 });
-*/
+
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -77,8 +77,6 @@ io.on('connection', function(socket){
     getInfo(weatherUrl, 'get-weather');
   });
 
-
-  /*
   socket.on('clear', function(){
     console.log('clear');
     oled.clearDisplay();
@@ -122,7 +120,7 @@ io.on('connection', function(socket){
 
 
   });
-  */
+
 
 });
 
