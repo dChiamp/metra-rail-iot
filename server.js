@@ -74,7 +74,7 @@ io.on('connection', function(socket){
 
   socket.on('get-weather', function(){
     var weatherUrl = `http://api.wunderground.com/api/${process.env.WUNDERGROUND_API_KEY}/conditions/q/CA/Los_Angeles.json`
-    getInfo(weatherUrl, 'get-weather');
+    getInfo(weatherUrl, 'get-weather', parseWeatherData);
   });
 
   socket.on('clear', function(){
@@ -96,7 +96,7 @@ io.on('connection', function(socket){
   socket.on('rail', function(stationId, stationName){
     const getURL = `http://api.metro.net/agencies/lametro-rail/routes/804/stops/${stationId}/predictions`
 
-    //getInfo(getURL, 'rail', parseData)
+    //getInfo(getURL, 'rail', parseRailData)
 
     request({
       method: 'GET',
@@ -111,7 +111,7 @@ io.on('connection', function(socket){
 
         io.emit('rail', data);
 
-        parseData(data, stationName)
+        parseRailData(data, stationName)
 
       }
 
@@ -134,12 +134,25 @@ function getInfo (url, socket, cb) {
         return console.error('request failed:', error);
       } else {
         var data = JSON.parse(info);
-        console.log('getInfo data: ', data);
+        // console.log('getInfo data: ', data);
         io.emit(socket, data)
+        cb(data)
       }
 
     })
 }
+
+  function parseWeatherData (data) {
+    var currentWeather = data['current_observation'];
+    var feelsLike = currentWeather['feelslike_string'];
+    var weather = currentWeather['weather'];
+    var WindString = currentWeather['wind_string'];
+    var uv = currentWeather['UV'];
+    var icon = currentWeather['icon'];
+
+    console.log('currentWeather', currentWeather, 'feelsLike', feelsLike, 'weather', weather, 'WindString', WindString, 'uv', uv)
+
+  }
 
 
 var destinations = {
@@ -149,7 +162,7 @@ var destinations = {
   "804_1_var1": 'Atlantic / N.'
 }
 
-function parseData (info, stationName) {
+function parseRailData (info, stationName) {
   var data = info.items;
   var minDirection = data[0]['run_id'];
   var minDestination = destinations[minDirection];
