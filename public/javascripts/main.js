@@ -11,20 +11,31 @@ jQuery( document ).ready(function() {
     }
   });
 
-
-  $('#clear-info').on('click', function() {
-    socket.emit('clear');
-  });
-
   socket.on('message', function(msg){
     console.log('msg ', msg);
     // parseData (data) 
+  });
+
+  $('#clear-info').on('click', function() {
+    socket.emit('clear');
   });
 
   socket.on('clear', function(msg){
     console.log('msg ', msg);
     // parseData (data) 
   });
+
+  $('#get-weather').on('click', function() {
+    socket.emit('get-weather');
+  });
+
+  socket.on('get-weather', function(data){
+    console.log('data ', data);
+    // parseData (data) 
+  });
+
+
+
 
 
 

@@ -14,6 +14,8 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 var methodOverride = require('method-override')
 
+require('dotenv').config();
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -39,6 +41,7 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+/*
 var five = require('johnny-five'),
     font = require('oled-font-5x7'),
     Oled = require('oled-js');
@@ -60,7 +63,7 @@ board.on("ready", function() {
   led = new five.Led(2);
 
 });
-
+*/
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -69,6 +72,13 @@ io.on('connection', function(socket){
     console.log('user disconnected');
   });
 
+  socket.on('get-weather', function(){
+    var weatherUrl = `http://api.wunderground.com/api/${process.env.WUNDERGROUND_API_KEY}/conditions/q/CA/Los_Angeles.json`
+    getInfo(weatherUrl, 'get-weather', io);
+  });
+
+
+  /*
   socket.on('clear', function(){
     console.log('clear');
     oled.clearDisplay();
@@ -89,7 +99,7 @@ io.on('connection', function(socket){
 
     // oled.turnOnDisplay();
 
-    var getURL = `http://api.metro.net/agencies/lametro-rail/routes/804/stops/${stationId}/predictions`
+    const getURL = `http://api.metro.net/agencies/lametro-rail/routes/804/stops/${stationId}/predictions`
 
     request({
       method: 'GET',
@@ -113,8 +123,28 @@ io.on('connection', function(socket){
     // oled.writeString(font, 1, 'rail info', 1, true, 2);
     console.log('rail endpoint' + stationId);
 
+
   });
+  */
+
 });
+
+function getInfo (url, socket, cb) {
+      request({
+      method: 'GET',
+      url: url
+    },
+    function (error, response, info) {
+      if (error) {
+        return console.error('request failed:', error);
+      } else {
+        var data = JSON.parse(info);
+        console.log('getInfo data: ', data);
+        cb.emit(socket, data)
+      }
+
+    })
+}
 
 
 var destinations = {
